@@ -24,9 +24,52 @@ body{
   text-decoration:none;
 }
 .site-header .nav-link:hover{opacity:1;text-decoration:underline}
-.container{
-  max-width:800px;margin:0 auto;
-  padding:1.5rem 1rem 3rem;
+.page-layout{display:flex}
+.sidebar{
+  width:250px;flex-shrink:0;background:#fff;
+  border-right:1px solid #E0E0E0;
+  height:100vh;position:sticky;top:0;
+  overflow-y:auto;z-index:10;scrollbar-width:thin;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.sidebar-nav{padding:.75rem 0;border-bottom:1px solid #E0E0E0}
+.sidebar-nav a{
+  display:block;padding:.5rem 1rem;text-decoration:none;
+  color:#333;font-size:.875rem;font-weight:500;
+}
+.sidebar-nav a:hover{background:#f5f5f5}
+.sidebar-nav a.active{
+  color:#0077B5;font-weight:700;background:#E8F0FE;
+  border-right:3px solid #0077B5;
+}
+.sidebar-label{
+  padding:.75rem 1rem .25rem;font-size:.7rem;
+  text-transform:uppercase;letter-spacing:.05em;
+  color:#999;font-weight:600;
+}
+.sidebar-section-link{
+  display:block;padding:.35rem 1rem;text-decoration:none;
+  color:#333;font-size:.82rem;
+  border-left:3px solid transparent;
+  transition:background .15s;
+}
+.sidebar-section-link:hover{background:#f5f5f5}
+.sidebar-section-link.active{border-left-color:#0077B5;background:#E8F0FE;color:#0077B5;font-weight:600}
+.sidebar-toggle{
+  display:none;position:fixed;top:.75rem;left:.75rem;z-index:20;
+  background:#0A2540;color:#fff;border:none;border-radius:6px;
+  width:36px;height:36px;font-size:1.1rem;cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.3);z-index:9;
+}
+.sidebar-overlay.open{display:block}
+.main-content{
+  flex:1;min-width:0;max-width:800px;
+  padding:1.5rem 1rem 3rem;margin:0 auto;
 }
 .section{
   background:#fff;
@@ -94,7 +137,14 @@ td:last-child,th:last-child{text-align:right}
 .footer a{color:#0077B5;text-decoration:none}
 .footer a:hover{text-decoration:underline}
 
-@media(max-width:600px){
+@media(max-width:900px){
+  .sidebar{
+    position:fixed;left:-260px;top:0;height:100vh;
+    transition:left .25s ease;
+    box-shadow:2px 0 12px rgba(0,0,0,.15);
+  }
+  .sidebar.open{left:0}
+  .sidebar-toggle{display:block}
   .site-header h1{font-size:1.3rem}
   .kpi-card{flex:1 1 100%}
   table{font-size:.8rem}
@@ -108,10 +158,25 @@ td:last-child,th:last-child{text-align:right}
 <p>Analytics overview of LinkedIn page activity</p>
 <a class="nav-link" href="index.html">&larr; All Posts</a>
 </header>
-<main class="container">
+<button class="sidebar-toggle" aria-label="Menu" onclick="toggleSidebar()">&#9776;</button>
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="page-layout">
+<nav class="sidebar">
+<div class="sidebar-nav">
+<a href="index.html">All Posts</a>
+<a href="stats.html" class="active">Statistics</a>
+</div>
+<div class="sidebar-label">Sections</div>
+<a class="sidebar-section-link" href="#overview">Overview</a>
+<a class="sidebar-section-link" href="#timeline">Timeline</a>
+<a class="sidebar-section-link" href="#admins">Admin Breakdown</a>
+<a class="sidebar-section-link" href="#engagement">Engagement</a>
+<a class="sidebar-section-link" href="#content-mix">Content Mix</a>
+</nav>
+<main class="main-content">
 
 <!-- KPI Cards -->
-<div class="kpi-grid">
+<div id="overview" class="kpi-grid">
 <div class="kpi-card">
   <div class="kpi-value">58</div>
   <div class="kpi-label">Total Posts</div>
@@ -131,7 +196,7 @@ td:last-child,th:last-child{text-align:right}
 </div>
 
 <!-- Posts Timeline -->
-<div class="section">
+<div id="timeline" class="section">
 <div class="section-title">Posts Timeline</div>
 <div class="section-body">
 <img src="charts/posts_per_month.png" alt="Stacked bar chart showing number of original and reposted LinkedIn posts per month">
@@ -140,7 +205,7 @@ td:last-child,th:last-child{text-align:right}
 </div>
 
 <!-- Admin Breakdown -->
-<div class="section">
+<div id="admins" class="section">
 <div class="section-title">Admin Breakdown</div>
 <div class="section-body">
 <img src="charts/posts_per_admin.png" alt="Horizontal bar chart showing number of posts per publishing admin">
@@ -168,7 +233,7 @@ td:last-child,th:last-child{text-align:right}
 </div>
 
 <!-- Engagement -->
-<div class="section">
+<div id="engagement" class="section">
 <div class="section-title">Engagement Over Time</div>
 <div class="section-body">
 <img src="charts/engagement_over_time.png" alt="Dual-axis line chart showing average impressions and reactions per post over time">
@@ -200,7 +265,7 @@ td:last-child,th:last-child{text-align:right}
 </div>
 
 <!-- Content Mix -->
-<div class="section">
+<div id="content-mix" class="section">
 <div class="section-title">Content Mix</div>
 <div class="section-body">
 <img src="charts/post_type_pie.png" alt="Pie chart showing ratio of original versus reposted content">
@@ -209,9 +274,41 @@ td:last-child,th:last-child{text-align:right}
 </div>
 
 </main>
+</div>
 <footer class="footer">
 Data extracted from the <a href="https://www.linkedin.com/company/msca-digital-finance/" target="_blank">MSCA Digital Finance LinkedIn page</a>.
 &nbsp;|&nbsp; <a href="index.html">All Posts &rarr;</a>
 </footer>
+<script>
+function toggleSidebar(){
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.sidebar-overlay').classList.toggle('open');
+}
+(function(){
+  var links=document.querySelectorAll('.sidebar-section-link');
+  var sections=document.querySelectorAll('.section[id],.kpi-grid[id]');
+  if(sections.length&&'IntersectionObserver' in window){
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var id=e.target.id;
+          links.forEach(function(l){
+            l.classList.toggle('active',l.getAttribute('href')==='#'+id);
+          });
+        }
+      });
+    },{rootMargin:'-10% 0px -60% 0px'});
+    sections.forEach(function(s){observer.observe(s)});
+  }
+  links.forEach(function(l){
+    l.addEventListener('click',function(){
+      if(window.innerWidth<=900){
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.sidebar-overlay').classList.remove('open');
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>

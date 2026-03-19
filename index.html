@@ -24,9 +24,58 @@ body{
   text-decoration:none;
 }
 .site-header .nav-link:hover{opacity:1;text-decoration:underline}
-.container{
-  max-width:800px;margin:0 auto;
-  padding:1.5rem 1rem 3rem;
+.page-layout{display:flex}
+.sidebar{
+  width:250px;flex-shrink:0;background:#fff;
+  border-right:1px solid #E0E0E0;
+  height:100vh;position:sticky;top:0;
+  overflow-y:auto;z-index:10;scrollbar-width:thin;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.sidebar-nav{padding:.75rem 0;border-bottom:1px solid #E0E0E0}
+.sidebar-nav a{
+  display:block;padding:.5rem 1rem;text-decoration:none;
+  color:#333;font-size:.875rem;font-weight:500;
+}
+.sidebar-nav a:hover{background:#f5f5f5}
+.sidebar-nav a.active{
+  color:#0077B5;font-weight:700;background:#E8F0FE;
+  border-right:3px solid #0077B5;
+}
+.sidebar-label{
+  padding:.75rem 1rem .25rem;font-size:.7rem;
+  text-transform:uppercase;letter-spacing:.05em;
+  color:#999;font-weight:600;
+}
+.sidebar-posts{padding:.25rem 0}
+.sidebar-post-link{
+  display:block;padding:.35rem 1rem;text-decoration:none;
+  border-left:3px solid transparent;
+  transition:background .15s,border-color .15s;
+}
+.sidebar-post-link:hover{background:#f5f5f5}
+.sidebar-post-link.active{border-left-color:#0077B5;background:#E8F0FE}
+.sidebar-post-date{display:block;font-size:.7rem;color:#999;line-height:1.2}
+.sidebar-post-admin{
+  display:block;font-size:.8rem;color:#333;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sidebar-post-link.active .sidebar-post-admin{color:#0077B5;font-weight:600}
+.sidebar-toggle{
+  display:none;position:fixed;top:.75rem;left:.75rem;z-index:20;
+  background:#0A2540;color:#fff;border:none;border-radius:6px;
+  width:36px;height:36px;font-size:1.1rem;cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.3);z-index:9;
+}
+.sidebar-overlay.open{display:block}
+.main-content{
+  flex:1;min-width:0;max-width:800px;
+  padding:1.5rem 1rem 3rem;margin:0 auto;
 }
 .post-card{
   background:#fff;
@@ -124,7 +173,14 @@ body{
   box-shadow:0 2px 6px rgba(0,0,0,.2);
   display:none;
 }
-@media(max-width:600px){
+@media(max-width:900px){
+  .sidebar{
+    position:fixed;left:-260px;top:0;height:100vh;
+    transition:left .25s ease;
+    box-shadow:2px 0 12px rgba(0,0,0,.15);
+  }
+  .sidebar.open{left:0}
+  .sidebar-toggle{display:block}
   .site-header h1{font-size:1.3rem}
   .post-header{flex-direction:column;align-items:flex-start;gap:.2rem}
   .post-images-grid{grid-template-columns:1fr}
@@ -137,7 +193,77 @@ body{
 <p>58 posts | March 2025 &ndash; March 2026</p>
 <a class="nav-link" href="stats.html">Statistics &rarr;</a>
 </header>
-<main class="container">
+<button class="sidebar-toggle" aria-label="Menu" onclick="toggleSidebar()">&#9776;</button>
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="page-layout">
+<nav class="sidebar">
+<div class="sidebar-nav">
+<a href="index.html" class="active">All Posts</a>
+<a href="stats.html">Statistics</a>
+</div>
+<div class="sidebar-label">Posts (58)</div>
+<div class="sidebar-posts">
+<a class="sidebar-post-link" href="#post-1" data-post="1"><span class="sidebar-post-date">Mar 14, 2026</span><span class="sidebar-post-admin">&#8635; Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-2" data-post="2"><span class="sidebar-post-date">Mar 13, 2026</span><span class="sidebar-post-admin">&#8635; Mathis Jander</span></a>
+<a class="sidebar-post-link" href="#post-3" data-post="3"><span class="sidebar-post-date">Mar 12, 2026</span><span class="sidebar-post-admin">Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-4" data-post="4"><span class="sidebar-post-date">Mar 12, 2026</span><span class="sidebar-post-admin">Jens Reil</span></a>
+<a class="sidebar-post-link" href="#post-5" data-post="5"><span class="sidebar-post-date">Mar 5, 2026</span><span class="sidebar-post-admin">Jens Reil</span></a>
+<a class="sidebar-post-link" href="#post-6" data-post="6"><span class="sidebar-post-date">Feb 10, 2026</span><span class="sidebar-post-admin">Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-7" data-post="7"><span class="sidebar-post-date">Feb 6, 2026</span><span class="sidebar-post-admin">&#8635; Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-8" data-post="8"><span class="sidebar-post-date">Jan 29, 2026</span><span class="sidebar-post-admin">&#8635; Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-9" data-post="9"><span class="sidebar-post-date">Jan 20, 2026</span><span class="sidebar-post-admin">&#8635; Daniel Traian Pele</span></a>
+<a class="sidebar-post-link" href="#post-10" data-post="10"><span class="sidebar-post-date">Dec 2, 2025</span><span class="sidebar-post-admin">&#8635; Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-11" data-post="11"><span class="sidebar-post-date">Nov 25, 2025</span><span class="sidebar-post-admin">&#8635; Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-12" data-post="12"><span class="sidebar-post-date">Nov 23, 2025</span><span class="sidebar-post-admin">Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-13" data-post="13"><span class="sidebar-post-date">Nov 14, 2025</span><span class="sidebar-post-admin">Audrius Kabašinskas</span></a>
+<a class="sidebar-post-link" href="#post-14" data-post="14"><span class="sidebar-post-date">Nov 10, 2025</span><span class="sidebar-post-admin">&#8635; Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-15" data-post="15"><span class="sidebar-post-date">Nov 10, 2025</span><span class="sidebar-post-admin">Joerg Osterrieder</span></a>
+<a class="sidebar-post-link" href="#post-16" data-post="16"><span class="sidebar-post-date">Nov 7, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-17" data-post="17"><span class="sidebar-post-date">Oct 31, 2025</span><span class="sidebar-post-admin">Siang-Li Jheng</span></a>
+<a class="sidebar-post-link" href="#post-18" data-post="18"><span class="sidebar-post-date">Oct 28, 2025</span><span class="sidebar-post-admin">Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-19" data-post="19"><span class="sidebar-post-date">Oct 20, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-20" data-post="20"><span class="sidebar-post-date">Oct 13, 2025</span><span class="sidebar-post-admin">Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-21" data-post="21"><span class="sidebar-post-date">Oct 7, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-22" data-post="22"><span class="sidebar-post-date">Oct 1, 2025</span><span class="sidebar-post-admin">&#8635; Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-23" data-post="23"><span class="sidebar-post-date">Sep 16, 2025</span><span class="sidebar-post-admin">&#8635; Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-24" data-post="24"><span class="sidebar-post-date">Sep 16, 2025</span><span class="sidebar-post-admin">&#8635; Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-25" data-post="25"><span class="sidebar-post-date">Sep 3, 2025</span><span class="sidebar-post-admin">&#8635; Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-26" data-post="26"><span class="sidebar-post-date">Sep 3, 2025</span><span class="sidebar-post-admin">Branka Hadji Misheva</span></a>
+<a class="sidebar-post-link" href="#post-27" data-post="27"><span class="sidebar-post-date">Jul 4, 2025</span><span class="sidebar-post-admin">Audrius Kabašinskas</span></a>
+<a class="sidebar-post-link" href="#post-28" data-post="28"><span class="sidebar-post-date">Jun 11, 2025</span><span class="sidebar-post-admin">Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-29" data-post="29"><span class="sidebar-post-date">Jun 5, 2025</span><span class="sidebar-post-admin">Stephanie Blum</span></a>
+<a class="sidebar-post-link" href="#post-30" data-post="30"><span class="sidebar-post-date">May 23, 2025</span><span class="sidebar-post-admin">Asen Pantov</span></a>
+<a class="sidebar-post-link" href="#post-31" data-post="31"><span class="sidebar-post-date">May 20, 2025</span><span class="sidebar-post-admin">Claudia Tarantola</span></a>
+<a class="sidebar-post-link" href="#post-32" data-post="32"><span class="sidebar-post-date">May 20, 2025</span><span class="sidebar-post-admin">Asen Pantov</span></a>
+<a class="sidebar-post-link" href="#post-33" data-post="33"><span class="sidebar-post-date">May 19, 2025</span><span class="sidebar-post-admin">Asen Pantov</span></a>
+<a class="sidebar-post-link" href="#post-34" data-post="34"><span class="sidebar-post-date">May 12, 2025</span><span class="sidebar-post-admin">Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-35" data-post="35"><span class="sidebar-post-date">Apr 6, 2025</span><span class="sidebar-post-admin">Wolfgang Karl Härdle</span></a>
+<a class="sidebar-post-link" href="#post-36" data-post="36"><span class="sidebar-post-date">Apr 5, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-37" data-post="37"><span class="sidebar-post-date">Apr 3, 2025</span><span class="sidebar-post-admin">Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-38" data-post="38"><span class="sidebar-post-date">Apr 3, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-39" data-post="39"><span class="sidebar-post-date">Apr 2, 2025</span><span class="sidebar-post-admin">&#8635; Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-40" data-post="40"><span class="sidebar-post-date">Apr 2, 2025</span><span class="sidebar-post-admin">&#8635; Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-41" data-post="41"><span class="sidebar-post-date">Apr 1, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-42" data-post="42"><span class="sidebar-post-date">Apr 1, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-43" data-post="43"><span class="sidebar-post-date">Apr 1, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-44" data-post="44"><span class="sidebar-post-date">Apr 1, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-45" data-post="45"><span class="sidebar-post-date">Apr 1, 2025</span><span class="sidebar-post-admin">&#8635; Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-46" data-post="46"><span class="sidebar-post-date">Mar 30, 2025</span><span class="sidebar-post-admin">&#8635; Frederik Sinan BERNARD</span></a>
+<a class="sidebar-post-link" href="#post-47" data-post="47"><span class="sidebar-post-date">Mar 28, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-48" data-post="48"><span class="sidebar-post-date">Mar 27, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-49" data-post="49"><span class="sidebar-post-date">Mar 27, 2025</span><span class="sidebar-post-admin">Maria Iannario</span></a>
+<a class="sidebar-post-link" href="#post-50" data-post="50"><span class="sidebar-post-date">Mar 27, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-51" data-post="51"><span class="sidebar-post-date">Mar 27, 2025</span><span class="sidebar-post-admin">&#8635; Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-52" data-post="52"><span class="sidebar-post-date">Mar 21, 2025</span><span class="sidebar-post-admin">&#8635; Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-53" data-post="53"><span class="sidebar-post-date">Mar 21, 2025</span><span class="sidebar-post-admin">&#8635; Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-54" data-post="54"><span class="sidebar-post-date">Mar 20, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-55" data-post="55"><span class="sidebar-post-date">Mar 20, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-56" data-post="56"><span class="sidebar-post-date">Mar 19, 2025</span><span class="sidebar-post-admin">Codruta Mare</span></a>
+<a class="sidebar-post-link" href="#post-57" data-post="57"><span class="sidebar-post-date">Mar 17, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+<a class="sidebar-post-link" href="#post-58" data-post="58"><span class="sidebar-post-date">Mar 17, 2025</span><span class="sidebar-post-admin">Monica Violeta Achim</span></a>
+</div>
+</nav>
+<main class="main-content">
 <article class="post-card" id="post-1"><div class="post-header"><span class="post-date">March 14, 2026</span><span class="post-admin">Codruta Mare</span></div><div class="repost-badge">&#8635; Reposted from Joerg Osterrieder<div class="repost-title">Professor of Finance and Artificial Intelligence</div></div><div class="post-body">Thanks
 for this great initiative!
 📊 Digital Datathon – From Data to Insight
@@ -330,12 +456,42 @@ is hosting the upcoming doctoral training course &quot;Foundations of Data Scien
 <article class="post-card" id="post-58"><div class="post-header"><span class="post-date">March 17, 2025</span><span class="post-admin">Monica Violeta Achim</span></div><div class="post-body">Join us for the doctoral training course „Foundations of Data Science” from 31st of March to 4th of April 2025! 💡
 is hosting the upcoming doctoral training course &quot;Foundations of Data Science (4 ECTS) and Project Management (1 ECTS) at</div><div class="truncated-note">Content truncated in source</div></article>
 </main>
+</div>
 <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593;</button>
 <script>
+function toggleSidebar(){
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.sidebar-overlay').classList.toggle('open');
+}
 (function(){
   var btn=document.querySelector('.back-to-top');
   window.addEventListener('scroll',function(){
     btn.style.display=window.scrollY>600?'block':'none';
+  });
+  var links=document.querySelectorAll('.sidebar-post-link');
+  var cards=document.querySelectorAll('.post-card');
+  if(cards.length&&'IntersectionObserver' in window){
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var id=e.target.id;
+          links.forEach(function(l){
+            l.classList.toggle('active',l.getAttribute('href')==='#'+id);
+          });
+          var active=document.querySelector('.sidebar-post-link.active');
+          if(active)active.scrollIntoView({block:'nearest',behavior:'smooth'});
+        }
+      });
+    },{rootMargin:'-10% 0px -80% 0px'});
+    cards.forEach(function(c){observer.observe(c)});
+  }
+  links.forEach(function(l){
+    l.addEventListener('click',function(){
+      if(window.innerWidth<=900){
+        document.querySelector('.sidebar').classList.remove('open');
+        document.querySelector('.sidebar-overlay').classList.remove('open');
+      }
+    });
   });
 })();
 </script>
